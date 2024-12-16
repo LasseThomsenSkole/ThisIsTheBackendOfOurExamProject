@@ -42,7 +42,6 @@ public class CourseController {
 
         List<Course> jobTitleCourses = courseService.findCourseByRole(JobTitle.valueOf(jobTitle.name()));
 
-
         List<Map<String, Object>> foundCourses = jobTitleCourses.stream()
                 .distinct()
                 .map(course -> {
