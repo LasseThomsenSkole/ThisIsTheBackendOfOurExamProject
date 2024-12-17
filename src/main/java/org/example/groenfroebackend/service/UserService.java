@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.example.groenfroebackend.model.User;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -33,4 +35,26 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
+    public User createUser (User user) {
+        return userRepository.save(user);
+    }
+
+    public User editUser(String email, User updatedUser) {
+        Optional<User> user = Optional.ofNullable(userRepository.findByEmail(email));
+
+        if (user.isPresent()) {
+            User currentUser = user.get();
+
+            currentUser.setName(updatedUser.getName());
+            currentUser.setEmail(updatedUser.getEmail());
+            currentUser.setPhoneNumber(updatedUser.getPhoneNumber());
+            currentUser.setStoreId(updatedUser.getStoreId());
+            currentUser.setJobTitle(updatedUser.getJobTitle());
+            currentUser.setRole(updatedUser.getRole());
+
+            return userRepository.save(updatedUser);
+        }else {
+            throw new RuntimeException();
+        }
+    }
 }
