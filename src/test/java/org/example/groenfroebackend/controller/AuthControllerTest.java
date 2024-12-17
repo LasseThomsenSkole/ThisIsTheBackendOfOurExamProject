@@ -38,7 +38,7 @@ class AuthControllerTest {
     }
 
     @Test
-    void loginUser_SuccessfulAuthentication_ReturnsToken() throws Exception {
+    void successfulAuthenticationReturnsJWTToken() throws Exception {
         // Arrange
         AuthenticationRequest authRequest = new AuthenticationRequest("testuser", "password");
         JobTitle jobTitle = JobTitle.OPTICIAN;
@@ -68,7 +68,7 @@ class AuthControllerTest {
     }
 
     @Test
-    void loginUser_FailedAuthentication_ThrowsException() {
+    void failedAuthenticationThrowsException() {
         // Arrange
         AuthenticationRequest authRequest = new AuthenticationRequest("testuser", "wrongpassword");
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
