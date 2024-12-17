@@ -3,17 +3,21 @@ package org.example.groenfroebackend.controller;
 import org.example.groenfroebackend.model.Enums.JobTitle;
 import org.example.groenfroebackend.model.Post;
 import org.example.groenfroebackend.service.PostService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.*;
@@ -21,28 +25,34 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+public class PostControllerTest {
 
-public class NewsControllerTest { //todo fix det her så det passer med auth test
-
-    @Autowired
     private MockMvc mockMvc;
 
     @Mock
     private PostService postService;
 
+    @InjectMocks
+    private PostController postController;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        mockMvc = MockMvcBuilders.standaloneSetup(postController).build();
+    }
+
     @Test
-    public void testSearchNews() throws Exception {
-        // Prepare test data
+    void searchNewsSuccessful() throws Exception {
+        // Arrange
         Post post1 = new Post(1, "Title 1", "Content 1", LocalDate.now(), JobTitle.OPTICIAN);
         Post post2 = new Post(2, "Title 2", "Content 2", LocalDate.now(), JobTitle.OPTICIAN);
         List<Post> postList = Arrays.asList(post1, post2);
         Page<Post> postPage = new PageImpl<>(postList, PageRequest.of(0, 10), 2);
 
-        // Mock the service method
         when(postService.searchNews(anyString(), anyInt(), anyInt())).thenReturn(postPage);
 
-        // Perform the request and verify the response
-        mockMvc.perform(get("/search")
+        // Act & Assert
+        mockMvc.perform(get("/news/search")
                         .param("keyword", "test")
                         .param("page", "0")
                         .param("size", "10")
@@ -62,15 +72,14 @@ public class NewsControllerTest { //todo fix det her så det passer med auth tes
     }
 
     @Test
-    public void testSearchNewsWithoutKeyword() throws Exception {
-        // Prepare test data
-        Page<Post> emptyPage = new PageImpl<>(Arrays.asList(), PageRequest.of(0, 10), 0);
+    void searchNewsWithoutKeywordReturnsEmptyPage() throws Exception {
+        // Arrange
+        Page<Post> emptyPage = new PageImpl<>(Collections.emptyList(), PageRequest.of(0, 10), 0);
 
-        // Mock the service method
         when(postService.searchNews(isNull(), anyInt(), anyInt())).thenReturn(emptyPage);
 
-        // Perform the request and verify the response
-        mockMvc.perform(get("/search")
+        // Act & Assert
+        mockMvc.perform(get("/news/search")
                         .param("page", "0")
                         .param("size", "10")
                         .contentType(MediaType.APPLICATION_JSON))
