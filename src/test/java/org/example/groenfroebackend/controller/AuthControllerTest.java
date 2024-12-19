@@ -41,7 +41,7 @@ class AuthControllerTest {
     void successfulAuthenticationReturnsJWTToken() throws Exception {
         // Arrange
         AuthenticationRequest authRequest = new AuthenticationRequest("testuser", "password");
-        JobTitle jobTitle = JobTitle.OPTICIAN;
+        JobTitle jobTitle = JobTitle.GLASS_SELLER;
         UserPrincipal userPrincipal = new UserPrincipal(
                 1,
                 "testuser",
