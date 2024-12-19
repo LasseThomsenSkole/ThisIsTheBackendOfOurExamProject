@@ -44,8 +44,8 @@ public class PostControllerTest {
     @Test
     void searchNewsSuccessful() throws Exception {
         // Arrange
-        Post post1 = new Post(1, "Title 1", "Content 1", LocalDate.now(), JobTitle.OPTICIAN);
-        Post post2 = new Post(2, "Title 2", "Content 2", LocalDate.now(), JobTitle.OPTICIAN);
+        Post post1 = new Post(1, "Title 1", "Content 1", LocalDate.now(), JobTitle.GLASS_SELLER);
+        Post post2 = new Post(2, "Title 2", "Content 2", LocalDate.now(), JobTitle.GLASS_SELLER);
         List<Post> postList = Arrays.asList(post1, post2);
         Page<Post> postPage = new PageImpl<>(postList, PageRequest.of(0, 10), 2);
 

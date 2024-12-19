@@ -47,7 +47,7 @@ public class AuthController {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(Role.ADMIN); //todo fix det her
-        user.setJobTitle(JobTitle.OPTICIAN);
+        user.setJobTitle(JobTitle.GLASS_SELLER);
         userRepository.save(user);
         return ResponseEntity.ok("User created");
     }
